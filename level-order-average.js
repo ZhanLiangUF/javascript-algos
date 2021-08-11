@@ -7,30 +7,18 @@ class Node {
   }
   
   const levelAverages = (root) => {
-    let current_level = [root]
-    let next_level = []
-    let values = []
-    let current = root
-    if (current === null) return values
-    
-    while(current_level.length > 0){
-      let total = 0
-      for(let node of current_level){
-        total += node.val
-      }
-      values.push(total / current_level.length)
-      for(let node of current_level){
-        if(node.left !== null){
-          next_level.push(node.left)
+    let q = [root], ans = []
+    while (q.length) {
+        let qlen = q.length, row = 0
+        for (let i = 0; i < qlen; i++) {
+            let curr = q.shift()
+            row += curr.val
+            if (curr.left) q.push(curr.left)
+            if (curr.right) q.push(curr.right)
         }
-        if(node.right !== null){
-          next_level.push(node.right)
-        }
-      }
-      current_level = next_level
-      next_level = []
+        ans.push(row/qlen)
     }
-    return values
+    return ans
   };
   
   const a = new Node(3);
@@ -45,8 +33,6 @@ class Node {
   b.left = d;
   b.right = e;
   c.right = f;
-  levelAverages(a);
-  
   /*
   take initial value
   [11, 4] [4, -2, 1]
